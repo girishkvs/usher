@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Usher</title>
+    <link rel="stylesheet" href="styles/ui.css" />
+  </head>
+  <body class="usher-popup">
+    <header class="popup-head">
+      <div class="popup-brand">
+        <img class="popup-logo" src="assets/icon-48.png" alt="" />
+        <div>
+          <strong>Usher</strong>
+          <small id="status-line">Checking page…</small>
+        </div>
+      </div>
+      <label class="switch" title="Enable Usher globally">
+        <input type="checkbox" id="enabled" />
+        <span></span>
+      </label>
+    </header>
+
+    <section class="popup-section">
+      <div class="popup-actions">
+        <button type="button" id="render" class="primary">Render this page</button>
+        <button type="button" id="toggle-raw">Source</button>
+        <button type="button" id="toggle-toc">Contents</button>
+        <button type="button" id="copy-html">Copy HTML</button>
+        <button type="button" id="print">Print</button>
+        <button type="button" id="viewer">Open viewer</button>
+      </div>
+    </section>
+
+    <section class="popup-section">
+      <label class="field">
+        <span>Auto-render</span>
+        <select id="mode">
+          <option value="extension">Markdown file extensions</option>
+          <option value="smart">Smart detection</option>
+          <option value="never">Manual only</option>
+        </select>
+      </label>
+      <label class="field">
+        <span>Theme</span>
+        <select id="theme">
+          <option value="auto">Match system</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+          <option value="github">GitHub</option>
+          <option value="sepia">Sepia</option>
+          <option value="high-contrast">High contrast</option>
+        </select>
+      </label>
+      <label class="field checkbox">
+        <input type="checkbox" id="site-enabled" />
+        <span id="site-label">Always render on this site</span>
+      </label>
+    </section>
+
+    <section class="popup-section" id="file-access-warning" hidden>
+      <p class="warning">
+        Local <code>file://</code> markdown needs one extra permission.
+        <button type="button" id="open-file-access" class="link">Enable file access</button>
+      </p>
+    </section>
+
+    <footer class="popup-foot">
+      <button type="button" id="options" class="link">Settings</button>
+      <span id="doc-stats"></span>
+    </footer>
+
+    <script src="popup.js"></script>
+  </body>
+</html>

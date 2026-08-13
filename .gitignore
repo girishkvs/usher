@@ -1,0 +1,15 @@
+# Build output & deps
+node_modules/
+dist/
+build/
+artifacts/
+*.tsbuildinfo
+
+# Logs & scratch
+*.log
+tmp_*
+tmp-*
+
+# Editor
+.vscode/
+.idea/

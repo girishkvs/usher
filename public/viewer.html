@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Usher viewer</title>
+    <link rel="stylesheet" href="styles/ui.css" />
+    <link rel="stylesheet" href="styles/usher.css" />
+    <link rel="stylesheet" href="vendor/katex/katex.min.css" />
+  </head>
+  <body class="usher-viewer usher-body">
+    <div class="viewer-bar">
+      <img class="popup-logo" src="assets/icon-48.png" alt="" />
+      <strong>Usher viewer</strong>
+      <div class="viewer-bar-actions">
+        <button type="button" id="open-file">Open file…</button>
+        <button type="button" id="toggle-editor">Editor</button>
+        <button type="button" id="load-sample">Sample</button>
+        <button type="button" id="clear">Clear</button>
+        <button type="button" id="options">Settings</button>
+      </div>
+      <input type="file" id="file-input" accept=".md,.markdown,.mdown,.mkd,.mkdn,.mdwn,.mmd,.rmd,.qmd,.txt,text/markdown,text/plain" hidden />
+    </div>
+
+    <div class="viewer-body">
+      <section class="viewer-editor" id="editor-pane" hidden>
+        <textarea id="editor" spellcheck="false" placeholder="Type or paste Markdown here…"></textarea>
+      </section>
+      <section class="viewer-preview" id="host"></section>
+    </div>
+
+    <div class="viewer-drop" id="drop-hint" hidden>
+      <div>Drop a Markdown file to render it</div>
+    </div>
+
+    <script src="viewer.js"></script>
+  </body>
+</html>

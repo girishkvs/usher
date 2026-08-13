@@ -1,0 +1,87 @@
+[
+  {
+    "id": 1,
+    "priority": 1,
+    "action": {
+      "type": "modifyHeaders",
+      "responseHeaders": [
+        { "header": "content-type", "operation": "set", "value": "text/plain; charset=utf-8" }
+      ]
+    },
+    "condition": {
+      "resourceTypes": ["main_frame"],
+      "isUrlFilterCaseSensitive": false,
+      "responseHeaders": [
+        {
+          "header": "content-type",
+          "values": [
+            "text/markdown*",
+            "text/x-markdown*",
+            "text/x-web-markdown*",
+            "application/markdown*",
+            "application/x-markdown*"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 2,
+    "priority": 2,
+    "action": {
+      "type": "modifyHeaders",
+      "responseHeaders": [
+        { "header": "content-type", "operation": "set", "value": "text/plain; charset=utf-8" },
+        { "header": "content-disposition", "operation": "remove" }
+      ]
+    },
+    "condition": {
+      "resourceTypes": ["main_frame"],
+      "isUrlFilterCaseSensitive": false,
+      "regexFilter": "\\.(md|markdown|mdown|mkd|mkdn|mdwn|mdtxt|mdtext|mmd|rmd|qmd)(\\?.*)?$",
+      "responseHeaders": [
+        {
+          "header": "content-type",
+          "values": [
+            "application/octet-stream*",
+            "binary/octet-stream*",
+            "text/markdown*",
+            "text/x-markdown*",
+            "application/markdown*",
+            "application/x-markdown*"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "priority": 3,
+    "action": {
+      "type": "modifyHeaders",
+      "responseHeaders": [
+        { "header": "content-type", "operation": "set", "value": "text/plain; charset=utf-8" },
+        { "header": "content-disposition", "operation": "remove" }
+      ]
+    },
+    "condition": {
+      "resourceTypes": ["main_frame"],
+      "isUrlFilterCaseSensitive": false,
+      "regexFilter": "\\.(md|markdown|mdown|mkd|mkdn|mdwn|mdtxt|mdtext|mmd|rmd|qmd)(\\?.*)?$",
+      "responseHeaders": [
+        {
+          "header": "content-type",
+          "values": [
+            "text/plain*",
+            "text/markdown*",
+            "text/x-markdown*",
+            "text/x-web-markdown*",
+            "application/markdown*",
+            "application/x-markdown*"
+          ]
+        },
+        { "header": "content-disposition", "values": ["attachment*"] }
+      ]
+    }
+  }
+]

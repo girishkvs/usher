@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Usher settings</title>
+    <link rel="stylesheet" href="styles/ui.css" />
+  </head>
+  <body class="usher-options">
+    <header class="options-head">
+      <h1><img class="popup-logo" src="assets/icon-48.png" alt="" /> Usher settings</h1>
+      <p>Markdown and Mermaid rendering for local files and web pages.</p>
+    </header>
+
+    <main class="options-grid">
+      <section class="card">
+        <h2>Rendering</h2>
+        <label class="field checkbox">
+          <input type="checkbox" data-setting="enabled" />
+          <span>Enable Usher</span>
+        </label>
+        <label class="field">
+          <span>Auto-render mode</span>
+          <select data-setting="mode">
+            <option value="extension">Markdown file extensions only</option>
+            <option value="smart">Smart detection of any plain-text page</option>
+            <option value="never">Manual only</option>
+          </select>
+        </label>
+        <label class="field checkbox">
+          <input type="checkbox" data-setting="showFrontMatter" />
+          <span>Show YAML front matter as a table</span>
+        </label>
+        <label class="field checkbox">
+          <input type="checkbox" data-setting="linkify" />
+          <span>Turn bare URLs into links</span>
+        </label>
+        <label class="field checkbox">
+          <input type="checkbox" data-setting="typographer" />
+          <span>Smart quotes and dashes</span>
+        </label>
+        <label class="field checkbox">
+          <input type="checkbox" data-setting="emoji" />
+          <span>Convert <code>:emoji:</code> shortcodes</span>
+        </label>
+      </section>
+
+      <section class="card">
+        <h2>Appearance</h2>
+        <label class="field">
+          <span>Theme</span>
+          <select data-setting="theme">
+            <option value="auto">Match system</option>
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+            <option value="github">GitHub</option>
+            <option value="sepia">Sepia</option>
+            <option value="high-contrast">High contrast</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Content width</span>
+          <select data-setting="contentWidth">
+            <option value="narrow">Narrow</option>
+            <option value="normal">Normal</option>
+            <option value="wide">Wide</option>
+            <option value="full">Full width</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Base font size <output data-output="fontSize"></output></span>
+          <input type="range" min="12" max="24" step="1" data-setting="fontSize" />
+        </label>
+        <label class="field checkbox">
+          <input type="checkbox" data-setting="showToc" />
+          <span>Show table of contents</span>
+        </label>
+        <label class="field checkbox">
+          <input type="checkbox" data-setting="tocCollapsed" />
+          <span>Start with the contents panel collapsed</span>
+        </label>
+        <label class="field checkbox">
+          <input type="checkbox" data-setting="headingAnchors" />
+          <span>Add anchor links to headings</span>
+        </label>
+      </section>
+
+      <section class="card">
+        <h2>Code and diagrams</h2>
+        <label class="field checkbox">
+          <input type="checkbox" data-setting="syntaxHighlight" />
+          <span>Syntax highlighting</span>
+        </label>
+        <label class="field checkbox">
+          <input type="checkbox" data-setting="lineNumbers" />
+          <span>Line numbers in code blocks</span>
+        </label>
+        <label class="field checkbox">
+          <input type="checkbox" data-setting="copyButtons" />
+          <span>Copy button on code blocks</span>
+        </label>
+        <label class="field checkbox">
+          <input type="checkbox" data-setting="mermaid" />
+          <span>Render Mermaid diagrams</span>
+        </label>
+        <label class="field">
+          <span>Mermaid theme</span>
+          <select data-setting="mermaidTheme">
+            <option value="auto">Match page theme</option>
+            <option value="default">Default</option>
+            <option value="dark">Dark</option>
+            <option value="forest">Forest</option>
+            <option value="neutral">Neutral</option>
+          </select>
+        </label>
+        <label class="field checkbox">
+          <input type="checkbox" data-setting="math" />
+          <span>Render <code>$…$</code> math with KaTeX</span>
+        </label>
+      </section>
+
+      <section class="card">
+        <h2>Local files</h2>
+        <p class="hint" id="file-access-state">Checking file access…</p>
+        <p class="hint">
+          Chrome and Edge need an explicit opt-in before an extension can read
+          <code>file://</code> pages. Open the extension details page and turn on
+          <strong>Allow access to file URLs</strong>.
+        </p>
+        <button type="button" id="open-extension-page" class="secondary">Open extension details</button>
+        <label class="field checkbox">
+          <input type="checkbox" data-setting="autoReload" />
+          <span>Live reload local files when they change on disk</span>
+        </label>
+        <label class="field">
+          <span>Reload poll interval (ms)</span>
+          <input type="number" min="500" max="10000" step="100" data-setting="autoReloadIntervalMs" />
+        </label>
+        <label class="field checkbox">
+          <input type="checkbox" data-setting="scrollPosition" />
+          <span>Restore scroll position on reload</span>
+        </label>
+      </section>
+
+      <section class="card">
+        <h2>Sites</h2>
+        <label class="field">
+          <span>Always render (one origin per line)</span>
+          <textarea data-setting-list="siteAllowList" rows="4" spellcheck="false"></textarea>
+        </label>
+        <label class="field">
+          <span>Never render (one origin per line)</span>
+          <textarea data-setting-list="siteDenyList" rows="4" spellcheck="false"></textarea>
+        </label>
+      </section>
+
+      <section class="card">
+        <h2>Custom CSS</h2>
+        <textarea data-setting="customCss" rows="10" spellcheck="false" placeholder=".usher-markdown h1 { color: rebeccapurple; }"></textarea>
+        <p class="hint">Applied to every rendered document. Target <code>.usher-markdown</code> for content styles.</p>
+      </section>
+
+      <section class="card">
+        <h2>About</h2>
+        <p class="hint">
+          Usher is MIT licensed and runs entirely on your machine. It makes no network requests
+          and collects nothing.
+        </p>
+        <div class="row">
+          <button type="button" id="open-notices" class="secondary">Third-party notices</button>
+        </div>
+        <p class="hint" id="version-line"></p>
+      </section>
+
+      <section class="card">
+        <h2>Backup</h2>
+        <div class="row">
+          <button type="button" id="export" class="secondary">Export settings</button>
+          <button type="button" id="import" class="secondary">Import settings</button>
+          <button type="button" id="reset" class="danger">Reset to defaults</button>
+        </div>
+        <input type="file" id="import-file" accept="application/json" hidden />
+        <p class="hint" id="save-state">Changes save automatically.</p>
+      </section>
+    </main>
+
+    <script src="options.js"></script>
+  </body>
+</html>

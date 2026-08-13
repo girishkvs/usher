@@ -1,0 +1,65 @@
+{
+  "name": "@girishkvs/usher",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Chrome and Edge extension that renders Markdown from local files and web pages, with Mermaid diagrams.",
+  "keywords": [
+    "markdown",
+    "mermaid",
+    "chrome-extension",
+    "edge-extension",
+    "manifest-v3",
+    "viewer"
+  ],
+  "license": "MIT",
+  "author": "Girish Konda (girishkvs)",
+  "homepage": "https://github.com/girishkvs/usher#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/girishkvs/usher.git"
+  },
+  "bugs": {
+    "url": "https://github.com/girishkvs/usher/issues"
+  },
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs && node scripts/gen-notices.mjs",
+    "build:dev": "node scripts/build.mjs --dev",
+    "watch": "node scripts/build.mjs --watch",
+    "icons": "node scripts/gen-icons.mjs",
+    "screenshots": "node scripts/gen-screenshots.mjs",
+    "notices": "node scripts/gen-notices.mjs",
+    "licenses": "node scripts/check-licenses.mjs",
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "node --import tsx --test test/*.test.ts",
+    "test:e2e": "node test/e2e/run.mjs",
+    "pack": "node scripts/pack.mjs",
+    "publish:edge": "node scripts/publish-edge.mjs",
+    "check": "node scripts/check-bundles.mjs",
+    "verify": "npm run typecheck && npm test && npm run licenses && npm run build && npm run check"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "dompurify": "^3.4.13",
+    "highlight.js": "^11.11.1",
+    "js-yaml": "^5.2.3",
+    "katex": "^0.18.1",
+    "markdown-it": "^15.0.0",
+    "markdown-it-anchor": "^9.2.1",
+    "markdown-it-deflist": "^4.0.0",
+    "markdown-it-emoji": "^3.0.0",
+    "markdown-it-footnote": "^4.0.0",
+    "markdown-it-task-lists": "^2.1.1",
+    "mermaid": "^11.16.1"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.2.5",
+    "@types/node": "^26.1.2",
+    "esbuild": "^0.28.1",
+    "playwright-core": "^1.62.1",
+    "tsx": "^4.23.8",
+    "typescript": "^7.0.2"
+  }
+}

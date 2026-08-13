@@ -1,0 +1,75 @@
+{
+  "manifest_version": 3,
+  "name": "Usher — Markdown & Mermaid Viewer",
+  "short_name": "Usher",
+  "version": "0.1.0",
+  "description": "Renders Markdown from local files and web pages, with Mermaid diagrams, syntax highlighting, and a table of contents.",
+  "minimum_chrome_version": "128",
+  "icons": {
+    "16": "assets/icon-16.png",
+    "32": "assets/icon-32.png",
+    "48": "assets/icon-48.png",
+    "128": "assets/icon-128.png"
+  },
+  "action": {
+    "default_title": "Usher",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "assets/icon-16.png",
+      "32": "assets/icon-32.png",
+      "48": "assets/icon-48.png",
+      "128": "assets/icon-128.png"
+    }
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": [
+    "storage",
+    "scripting",
+    "contextMenus",
+    "declarativeNetRequest"
+  ],
+  "host_permissions": ["<all_urls>"],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["detect.js"],
+      "run_at": "document_end",
+      "all_frames": false
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["styles/*", "vendor/*", "assets/*", "renderer.js", "THIRD-PARTY-NOTICES.txt"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "markdown-content-types",
+        "enabled": true,
+        "path": "rules.json"
+      }
+    ]
+  },
+  "commands": {
+    "toggle-render": {
+      "suggested_key": {
+        "default": "Alt+Shift+M"
+      },
+      "description": "Toggle Markdown rendering on this page"
+    },
+    "open-viewer": {
+      "suggested_key": {
+        "default": "Alt+Shift+V"
+      },
+      "description": "Open the Usher viewer"
+    }
+  }
+}
