@@ -47,6 +47,22 @@ addressed to a product id. Version 1.0.0 goes up manually:
 5. Once it is live, copy the **Product ID** from the extension's Partner Center
    page.
 
+### Identifiers assigned to 1.0.0
+
+Partner Center issued these when the first submission was accepted on
+2026-08-13. They are stable for the life of the extension, so later versions
+reuse them.
+
+| | |
+|---|---|
+| Store ID | `0RDCKCT987NJ` |
+| CRX ID (extension id) | `aeepoobopfolppmebnhihgogcplnfjhe` |
+| Listing URL | `https://microsoftedge.microsoft.com/addons/detail/aeepoobopfolppmebnhihgogcplnfjhe` |
+
+The listing URL only resolves once certification passes. The **Product ID** is
+deliberately not recorded here: it addresses the publishing API, so it lives in
+the `EDGE_PRODUCT_ID` repository secret with the other credentials.
+
 ## Every release after that: automated
 
 Enable the API and store the credentials once:
