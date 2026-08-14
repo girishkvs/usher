@@ -43,10 +43,27 @@ const buildOptions = {
   },
 };
 
+// package.json is the only place the version is written down. Keeping a second copy in
+// the manifest template only lets the two drift apart, so the build injects it instead.
+function withVersion(template, version) {
+  const anchor = 'short_name' in template ? 'short_name' : 'name';
+  const manifest = {};
+  for (const [key, value] of Object.entries(template)) {
+    manifest[key] = value;
+    if (key === anchor) {
+      manifest.version = version;
+    }
+  }
+  return manifest;
+}
+
 async function copyStaticAssets() {
-  const manifest = JSON.parse(await readFile(join(publicDir, 'manifest.json'), 'utf8'));
+  const template = JSON.parse(await readFile(join(publicDir, 'manifest.json'), 'utf8'));
   const pkg = JSON.parse(await readFile(join(root, 'package.json'), 'utf8'));
-  manifest.version = pkg.version;
+  if ('version' in template) {
+    throw new Error('public/manifest.json must not set "version"; it is injected from package.json.');
+  }
+  const manifest = withVersion(template, pkg.version);
 
   await cp(publicDir, outDir, {
     recursive: true,

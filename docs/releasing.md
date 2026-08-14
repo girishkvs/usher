@@ -22,8 +22,10 @@ submits it to Edge Add-ons.
 
 ## The version number is the contract
 
-`dist/manifest.json` takes its version from `package.json` at build time, so
-those two can never disagree. The release workflow additionally refuses to run if
+`dist/manifest.json` takes its version from `package.json` at build time. The
+template at `public/manifest.json` deliberately carries no `version` field, so
+there is only ever one copy of the number and nothing to drift; the build fails
+if that field reappears. The release workflow additionally refuses to run if
 the git tag does not match the built manifest, which is what stops a `v1.2.0` tag
 from shipping a package that still says `1.1.0`.
 

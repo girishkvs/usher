@@ -2,7 +2,6 @@
   "manifest_version": 3,
   "name": "Usher — Markdown & Mermaid Viewer",
   "short_name": "Usher",
-  "version": "0.1.0",
   "description": "Renders Markdown from local files and web pages, with Mermaid diagrams, syntax highlighting, and a table of contents.",
   "minimum_chrome_version": "128",
   "icons": {
