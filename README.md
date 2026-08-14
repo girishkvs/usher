@@ -1,5 +1,7 @@
 # Usher
 
+[![Microsoft Edge Add-ons](https://img.shields.io/badge/Edge%20Add--ons-install-0078D7?logo=microsoftedge&logoColor=white)](https://microsoftedge.microsoft.com/addons/detail/aeepoobopfolppmebnhihgogcplnfjhe)
+
 > Renders **Markdown** — from local files, from web pages, or from anything you paste — with **Mermaid** diagrams, syntax highlighting, and a live table of contents. Chrome and Edge, Manifest V3.
 
 Open a `.md` file and Usher takes over the tab. No server, no upload, no round trip: everything renders locally inside the browser.
@@ -26,6 +28,19 @@ Open a `.md` file and Usher takes over the tab. No server, no upload, no round t
 - **Syntax highlighting** — 36 languages, with aliases for the ones people actually write in day to day (`powershell`, `pwsh`, `csharp`, `kql`, `tsql`, `yaml`, `csproj`).
 - **Reading tools** — sticky table of contents with scroll spy, reading progress bar, word count, heading anchors, per-block copy buttons, raw-source toggle, and a print stylesheet that drops the chrome.
 - **Six themes** — auto, light, dark, GitHub, sepia, high contrast — plus content width, font size, and custom CSS.
+
+## Install
+
+From the store, on Edge:
+
+**[Get Usher from Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/aeepoobopfolppmebnhihgogcplnfjhe)**
+
+Chrome is supported by the same package but is not published to the Chrome Web
+Store, so on Chrome use the unpacked build below.
+
+After installing, open the extension's details page and turn on **Allow access
+to file URLs**. Without it, `file://` documents are invisible to every
+extension, so local `.md` files will not render.
 
 ## Install (unpacked)
 

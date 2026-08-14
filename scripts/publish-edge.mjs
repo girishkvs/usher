@@ -46,13 +46,18 @@ async function request(path, options = {}) {
   return { status: response.status, headers: response.headers, text };
 }
 
-/** The upload and publish calls are asynchronous: both hand back an operation to poll. */
+/**
+ * The upload and publish calls are asynchronous: both hand back an operation to poll.
+ * The reference documents 200 for a status read while the sample script checks for 202,
+ * so accept either rather than fail on a disagreement between Microsoft's own pages.
+ */
 async function waitForOperation(path, label) {
   const deadline = Date.now() + POLL_TIMEOUT_MS;
   while (Date.now() < deadline) {
     await new Promise((done) => setTimeout(done, POLL_INTERVAL_MS));
     const { status, text } = await request(path);
-    if (status !== 200) {
+    if (status !== 200 &&
+        status !== 202) {
       throw new Error(`${label}: status check returned ${status} -- ${text.slice(0, 300)}`);
     }
     let body;
@@ -74,6 +79,11 @@ async function waitForOperation(path, label) {
   throw new Error(`${label}: timed out after ${POLL_TIMEOUT_MS / 60000} minutes`);
 }
 
+/** Location comes back as a bare operation id, but tolerate a full URL in case that changes. */
+function operationId(location) {
+  return location.trim().replace(/\/+$/, '').split('/').pop();
+}
+
 const sizeMb = (statSync(packagePath).size / 1024 / 1024).toFixed(2);
 console.log(`Uploading usher-${version}.zip (${sizeMb} MB) to product ${productId}`);
 
@@ -92,7 +102,10 @@ if (!uploadOperation) {
   process.exit(1);
 }
 console.log('Upload accepted, waiting for validation');
-await waitForOperation(`/products/${productId}/submissions/draft/package/operations/${uploadOperation}`, 'Package upload');
+await waitForOperation(
+  `/products/${productId}/submissions/draft/package/operations/${operationId(uploadOperation)}`,
+  'Package upload',
+);
 console.log('Package validated.');
 
 if (!publishAfterUpload) {
@@ -110,6 +123,13 @@ if (publish.status !== 202) {
   process.exit(1);
 }
 const publishOperation = publish.headers.get('location');
+if (!publishOperation) {
+  console.error('Publish accepted but no operation id was returned.');
+  process.exit(1);
+}
 console.log('Publish accepted, waiting for it to be queued for review');
-await waitForOperation(`/products/${productId}/submissions/operations/${publishOperation}`, 'Publish');
+await waitForOperation(
+  `/products/${productId}/submissions/operations/${operationId(publishOperation)}`,
+  'Publish',
+);
 console.log(`Usher ${version} submitted for certification.`);

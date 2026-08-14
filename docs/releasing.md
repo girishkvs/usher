@@ -53,29 +53,43 @@ Partner Center issued these when the first submission was accepted on
 2026-08-13. They are stable for the life of the extension, so later versions
 reuse them.
 
-| | |
-|---|---|
 | Store ID | `0RDCKCT987NJ` |
+|---|---|
 | CRX ID (extension id) | `aeepoobopfolppmebnhihgogcplnfjhe` |
-| Listing URL | `https://microsoftedge.microsoft.com/addons/detail/aeepoobopfolppmebnhihgogcplnfjhe` |
+| Listing URL | https://microsoftedge.microsoft.com/addons/detail/aeepoobopfolppmebnhihgogcplnfjhe |
 
-The listing URL only resolves once certification passes. The **Product ID** is
-deliberately not recorded here: it addresses the publishing API, so it lives in
-the `EDGE_PRODUCT_ID` repository secret with the other credentials.
+1.0.0 went live on 2026-08-14, a few hours after submission rather than the
+seven business days Partner Center quotes. The **Product ID** is deliberately
+not recorded here: it addresses the publishing API, so it lives in the
+`EDGE_PRODUCT_ID` repository secret with the other credentials.
 
 ## Every release after that: automated
 
-Enable the API and store the credentials once:
+This is configured and live as of 1.0.0. The credentials are already in the
+repository, so a tagged release publishes to the store on its own.
 
-1. Partner Center → **Publish API** → opt in, then create an API key.
+To set it up again from scratch, or after the key expires:
+
+1. Partner Center → **Publish API** → **Turn on API**, then **New API key**.
+   Name it (the name cannot be changed later) and copy the key immediately — it
+   is only readable in the session that created it.
 2. In GitHub → Settings → Secrets and variables → Actions, add:
 
    | Kind | Name | Value |
    |---|---|---|
    | Secret | `EDGE_PRODUCT_ID` | Product ID from Partner Center |
-   | Secret | `EDGE_CLIENT_ID` | Client ID shown beside the API key |
+   | Secret | `EDGE_CLIENT_ID` | Client ID shown above the key list |
    | Secret | `EDGE_API_KEY` | The API key itself |
    | Variable | `EDGE_ENABLED` | `true` |
+
+To check a key works without publishing anything, request a deliberately
+invalid operation id: `401` means the credentials are wrong, `404` means they
+authenticated and only the operation id was rejected.
+
+```powershell
+curl -H "Authorization: ApiKey $key" -H "X-ClientID: $clientId" `
+  "https://api.addons.microsoftedge.microsoft.com/v1/products/$productId/submissions/draft/package/operations/00000000-0000-0000-0000-000000000000"
+```
 
 The `EDGE_ENABLED` variable is a deliberate switch: the publish step is skipped
 until you turn it on, so tagging never surprises you with a store submission.
