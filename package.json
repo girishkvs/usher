@@ -31,7 +31,7 @@
     "notices": "node scripts/gen-notices.mjs",
     "licenses": "node scripts/check-licenses.mjs",
     "typecheck": "tsc -p tsconfig.json",
-    "test": "node --import tsx --test test/*.test.ts",
+    "test": "node --import tsx --test test/markdown.test.ts test/md-detect.test.ts test/shared.test.ts",
     "test:e2e": "node test/e2e/run.mjs",
     "pack": "node scripts/pack.mjs",
     "publish:edge": "node scripts/publish-edge.mjs",
