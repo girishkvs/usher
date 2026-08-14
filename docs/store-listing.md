@@ -23,11 +23,11 @@ privacy policy URL the store form requires.
 
 | Asset | Size | File | Store |
 |---|---|---|---|
-| Screenshots (up to 10, at least 1) | 1366 x 768 | `build/store/edge-screenshot-1..5.png` | Edge |
+| Screenshots (up to 6, at least 1) | 1280 x 800 or 640 x 400 | `build/store/screenshot-1..5.png` | Edge |
 | Store logo | 300 x 300 | `build/store/logo-300.png` | Edge |
 | Small promo tile | 440 x 280 | `build/store/promo-440x280.png` | Edge, optional |
 | Large promo tile | 1400 x 560 | `build/store/promo-1400x560.png` | Edge, optional |
-| Screenshots | 1280 x 800 | `build/store/screenshot-1..5.png` | Chrome, if ever submitted |
+| Screenshots | 1366 x 768 | `build/store/edge-screenshot-1..5.png` | Spare set, unused |
 | Extension icon | 128 x 128 | `dist/assets/icon-128.png` | Both |
 
 Screenshot captions, in order:
@@ -37,6 +37,12 @@ Screenshot captions, in order:
 3. Local files render straight from disk and reload when you save.
 4. Paste, drop, or type Markdown in the built-in viewer.
 5. Six themes, adjustable width, and your own CSS if you want it.
+
+## Search terms
+
+Seven terms, within the 30-character and 21-word limits:
+`markdown`, `mermaid`, `markdown viewer`, `mermaid diagrams`, `md file`,
+`readme preview`, `syntax highlighting`.
 
 ## Single purpose
 
