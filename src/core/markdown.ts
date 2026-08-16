@@ -6,6 +6,7 @@ import deflist from 'markdown-it-deflist';
 import taskLists from 'markdown-it-task-lists';
 import { full as emoji } from 'markdown-it-emoji';
 import { slugify } from '../shared/slug.js';
+import { scanContainer } from './container-scan.js';
 import type { Settings } from '../shared/settings.js';
 
 export const MERMAID_CLASS = 'usher-mermaid';
@@ -112,81 +113,25 @@ const CONTAINER_ALERTS: Record<string, string> = {
   error: 'CAUTION',
 };
 
-const COLON = 0x3a;
-
 /**
  * Fenced containers -- `:::mermaid ... :::`. Azure DevOps wikis, GitLab, and
  * Docusaurus all use this instead of a code fence, and markdown-it would
  * otherwise swallow the whole block as a paragraph.
  */
 function containerPlugin(md: MarkdownIt): void {
-  const countMarkers = (state: StateBlock, line: number): number => {
-    const start = state.bMarks[line] + state.tShift[line];
-    const max = state.eMarks[line];
-    let pos = start;
-    while (pos < max && state.src.charCodeAt(pos) === COLON) {
-      pos += 1;
-    }
-    return pos - start;
-  };
-
-  const infoOf = (state: StateBlock, line: number, markers: number): string => {
-    const start = state.bMarks[line] + state.tShift[line] + markers;
-    return state.src.slice(start, state.eMarks[line]).trim();
-  };
-
   md.block.ruler.before(
     'fence',
     'usher_container',
     (state: StateBlock, startLine: number, endLine: number, silent: boolean) => {
-      if (state.sCount[startLine] - state.blkIndent >= 4) {
-        return false;
-      }
-      const markers = countMarkers(state, startLine);
-      if (markers < 3) {
-        return false;
-      }
-      const info = infoOf(state, startLine, markers);
-      if (info === '' ||
-          info.includes(':::')) {
+      const scan = scanContainer(state, startLine, endLine);
+      if (!scan) {
         return false;
       }
       if (silent) {
         return true;
       }
 
-      // Track a stack of opener marker lengths. A single depth counter plus the outer
-      // marker length gets the conventional `::::outer` / `:::inner` nesting wrong: the
-      // shorter inner closer is skipped and the outer closer ends the inner block.
-      const openMarkers = [markers];
-      let line = startLine;
-      let closed = false;
-      while (line + 1 < endLine) {
-        line += 1;
-        if (state.sCount[line] - state.blkIndent >= 4) {
-          continue;
-        }
-        const lineMarkers = countMarkers(state, line);
-        if (lineMarkers < 3) {
-          continue;
-        }
-        if (infoOf(state, line, lineMarkers) === '') {
-          if (lineMarkers < openMarkers[openMarkers.length - 1]) {
-            continue;
-          }
-          openMarkers.pop();
-          if (openMarkers.length === 0) {
-            closed = true;
-            break;
-          }
-        } else {
-          openMarkers.push(lineMarkers);
-        }
-      }
-      const contentEnd = closed ? line : endLine;
-
-      const name = info.split(/\s+/)[0].toLowerCase();
-      const rest = info.slice(name.length).trim();
+      const { markers, name, rest, contentEnd, closed } = scan;
 
       if (MERMAID_LANGUAGES.has(name) ||
           MATH_LANGUAGES.has(name)) {

@@ -13,6 +13,7 @@ Open a `.md` file and Usher takes over the tab. No server, no upload, no round t
 | [docs/usage.md](docs/usage.md) | Install, enable local files, every setting, keyboard shortcuts, troubleshooting |
 | [docs/design.md](docs/design.md) | Architecture, the detection pipeline, why the network rules exist, security model, code map |
 | [docs/store-listing.md](docs/store-listing.md) | Listing copy, permission justifications, and the asset checklist for submission |
+| [vscode/README.md](vscode/README.md) | The companion VS Code extension: readable wide diagrams and `:::` admonitions |
 | [docs/releasing.md](docs/releasing.md) | How a change gets from a git tag into the Edge Add-ons store |
 | [CHANGELOG.md](CHANGELOG.md) | What changed in each release |
 | [PRIVACY.md](PRIVACY.md) | What Usher reads, stores, and sends. The short version: nothing leaves your machine |

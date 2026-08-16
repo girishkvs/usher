@@ -1,0 +1,169 @@
+{
+  "name": "usher",
+  "displayName": "Usher — Markdown & Mermaid Preview",
+  "description": "A Markdown preview with a table of contents, reading themes, and Mermaid diagrams that stay readable. Renders Azure DevOps wiki and Docusaurus ::: blocks.",
+  "version": "0.1.0",
+  "private": true,
+  "publisher": "girishkvs",
+  "license": "MIT",
+  "author": "Girish Konda (girishkvs)",
+  "homepage": "https://github.com/girishkvs/usher#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/girishkvs/usher.git",
+    "directory": "vscode"
+  },
+  "bugs": {
+    "url": "https://github.com/girishkvs/usher/issues"
+  },
+  "categories": ["Programming Languages", "Visualization"],
+  "keywords": ["markdown", "mermaid", "admonition", "azure devops wiki", "preview"],
+  "icon": "media/icon.png",
+  "galleryBanner": {
+    "color": "#0d7680",
+    "theme": "dark"
+  },
+  "qna": "marketplace",
+  "engines": {
+    "vscode": "^1.121.0"
+  },
+  "capabilities": {
+    "virtualWorkspaces": true,
+    "untrustedWorkspaces": {
+      "supported": true
+    }
+  },
+  "type": "module",
+  "main": "./dist/extension.cjs",
+  "activationEvents": ["onLanguage:markdown"],
+  "contributes": {
+    "markdown.markdownItPlugins": true,
+    "markdown.previewScripts": ["./dist/preview.js"],
+    "markdown.previewStyles": ["./dist/preview.css"],
+    "commands": [
+      {
+        "command": "usher.openPreview",
+        "title": "Open Preview",
+        "category": "Usher",
+        "icon": "$(book)"
+      },
+      {
+        "command": "usher.openPreviewToSide",
+        "title": "Open Preview to the Side",
+        "category": "Usher",
+        "icon": "$(book)"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "usher.openPreviewToSide",
+          "when": "editorLangId == markdown",
+          "group": "navigation@1"
+        }
+      ],
+      "commandPalette": [
+        { "command": "usher.openPreview", "when": "editorLangId == markdown" },
+        { "command": "usher.openPreviewToSide", "when": "editorLangId == markdown" }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "usher.openPreviewToSide",
+        "key": "ctrl+shift+u",
+        "mac": "cmd+shift+u",
+        "when": "editorLangId == markdown"
+      }
+    ],
+    "configuration": {
+      "title": "Usher",
+      "properties": {
+        "usher.preview.theme": {
+          "type": "string",
+          "enum": ["auto", "light", "dark", "github", "sepia", "high-contrast"],
+          "default": "auto",
+          "description": "Reading theme for the Usher preview. Independent of the editor colour theme."
+        },
+        "usher.preview.contentWidth": {
+          "type": "string",
+          "enum": ["narrow", "normal", "wide", "full"],
+          "default": "normal",
+          "description": "Measure of the text column in the Usher preview."
+        },
+        "usher.preview.fontSize": {
+          "type": "number",
+          "default": 16,
+          "minimum": 10,
+          "maximum": 28,
+          "description": "Base font size for the Usher preview, in pixels."
+        },
+        "usher.preview.showToc": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show the table of contents sidebar in the Usher preview."
+        },
+        "usher.preview.mermaidTheme": {
+          "type": "string",
+          "enum": ["auto", "default", "dark", "forest", "neutral"],
+          "default": "auto",
+          "description": "Mermaid theme used by the Usher preview."
+        },
+        "usher.preview.math": {
+          "type": "boolean",
+          "default": true,
+          "description": "Render $...$ and $$...$$ with KaTeX in the Usher preview."
+        },
+        "usher.preview.lineNumbers": {
+          "type": "boolean",
+          "default": false,
+          "description": "Show line numbers on code blocks in the Usher preview."
+        },
+        "usher.preview.showFrontMatter": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show YAML front matter as a metadata table in the Usher preview."
+        },
+        "usher.preview.customCss": {
+          "type": "string",
+          "default": "",
+          "description": "Extra CSS applied to the Usher preview."
+        },
+        "usher.diagrams.fitToWidth": {
+          "type": "boolean",
+          "default": true,
+          "description": "In VS Code's own Markdown preview, scale wide Mermaid diagrams down to the column width and scroll rather than shrinking them past readability."
+        },
+        "usher.diagrams.minimumScale": {
+          "type": "number",
+          "default": 0.55,
+          "minimum": 0.1,
+          "maximum": 1,
+          "description": "Smallest scale a diagram may be shrunk to in VS Code's own preview before Usher lets it scroll sideways instead. 1 disables shrinking altogether."
+        },
+        "usher.admonitions.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Render ::: note, tip, important, warning and caution blocks as callouts in VS Code's own preview. Mermaid and math blocks are always left to the built-in renderer."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "typecheck": "tsc -p tsconfig.json",
+    "screenshots": "node scripts/gen-screenshots.mjs",
+    "test": "node --import tsx --test test/admonitions.test.ts test/diagram-fit.test.ts",
+    "package": "npm run build && vsce package --no-dependencies",
+    "verify": "npm run typecheck && npm test && npm run build"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.2",
+    "@types/vscode": "^1.121.0",
+    "@vscode/vsce": "^3.6.0",
+    "esbuild": "^0.28.1",
+    "markdown-it": "^15.0.0",
+    "tsx": "^4.23.8",
+    "typescript": "^7.0.2"
+  }
+}
+

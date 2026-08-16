@@ -19,6 +19,11 @@ export interface ViewContext {
   onTitle?: (title: string) => void;
   /** Shown in the header; defaults to the file name from sourceUrl. */
   subtitle?: string;
+  /**
+   * Stores the theme chosen from the toolbar. Hosts outside the browser extension --
+   * the VS Code panel, for one -- have no `chrome.storage`, so they supply their own.
+   */
+  persistTheme?: (theme: ThemeName) => void;
 }
 
 const FONT_STACK =
@@ -348,6 +353,10 @@ export class UsherView {
     this.settings = { ...this.settings, theme: next };
     this.applyTheme();
     this.flash(`Theme: ${next}`);
+    if (this.context.persistTheme) {
+      this.context.persistTheme(next);
+      return;
+    }
     void chrome.storage?.sync?.get('usher.settings').then((stored) => {
       const current = (stored['usher.settings'] ?? {}) as Record<string, unknown>;
       return chrome.storage.sync.set({ 'usher.settings': { ...current, theme: next } });
@@ -477,8 +486,10 @@ export class UsherView {
       this.elements.article.querySelectorAll<HTMLElement>('h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]'),
     );
     if (found.length < 2) {
+      // Too few headings to be worth a sidebar. This is a presentation decision, so it
+      // must not clobber `tocVisible`, which records what the reader asked for -- a
+      // later render with real headings has to be able to bring the sidebar back.
       this.elements.app.dataset.usherToc = '0';
-      this.tocVisible = false;
       return;
     }
 
@@ -501,6 +512,7 @@ export class UsherView {
       this.headings.push({ id: heading.id, level, text: link.textContent, element: heading, link });
     }
     container.appendChild(list);
+    this.elements.app.dataset.usherToc = this.tocVisible ? '1' : '0';
   }
 
   private updateMeta(meta: HTMLElement, body: string): void {

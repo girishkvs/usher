@@ -1,0 +1,79 @@
+/* Usher — Markdown Extras. Styling leans on VS Code theme variables so callouts and
+   diagrams follow whichever colour theme is active. */
+
+.usher-diagram-scrolls {
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 100%;
+  padding-bottom: 0.4rem;
+}
+
+.usher-diagram-scrolls > svg {
+  display: block;
+}
+
+.usher-admonition {
+  margin: 1rem 0;
+  padding: 0.6rem 1rem;
+  border-left: 0.3rem solid var(--usher-accent, var(--vscode-textLink-foreground));
+  border-radius: 3px;
+  background: var(--vscode-textBlockQuote-background, rgba(127, 127, 127, 0.1));
+}
+
+.usher-admonition > :first-child {
+  margin-top: 0;
+}
+
+.usher-admonition > :last-child {
+  margin-bottom: 0;
+}
+
+.usher-admonition-title {
+  font-weight: 600;
+  color: var(--usher-accent, var(--vscode-textLink-foreground));
+  margin-bottom: 0.35rem;
+}
+
+.usher-admonition-title::before {
+  margin-right: 0.4rem;
+}
+
+.usher-admonition-note {
+  --usher-accent: var(--vscode-charts-blue, #3794ff);
+}
+
+.usher-admonition-note .usher-admonition-title::before {
+  content: "ℹ";
+}
+
+.usher-admonition-tip {
+  --usher-accent: var(--vscode-charts-green, #89d185);
+}
+
+.usher-admonition-tip .usher-admonition-title::before {
+  content: "✔";
+}
+
+.usher-admonition-important {
+  --usher-accent: var(--vscode-charts-purple, #b180d7);
+}
+
+.usher-admonition-important .usher-admonition-title::before {
+  content: "★";
+}
+
+.usher-admonition-warning {
+  --usher-accent: var(--vscode-charts-yellow, #cca700);
+}
+
+.usher-admonition-warning .usher-admonition-title::before {
+  content: "▲";
+}
+
+.usher-admonition-caution {
+  --usher-accent: var(--vscode-charts-red, #f14c4c);
+}
+
+.usher-admonition-caution .usher-admonition-title::before {
+  content: "⛔";
+}

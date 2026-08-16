@@ -32,6 +32,28 @@ jobs:
         shell: bash
         run: node scripts/check-bundles.mjs
 
+  vscode-extension:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      # The extension reuses the browser renderer, so the shared dependencies and the
+      # type packages it relies on come from the repository root, not from vscode/.
+      - name: Install the shared renderer dependencies
+        run: npm install --no-audit --no-fund
+      - name: Install
+        run: npm install --no-audit --no-fund
+        working-directory: vscode
+      - name: Verify
+        run: npm run verify
+        working-directory: vscode
+
   package:
     runs-on: ubuntu-latest
     steps:

@@ -1,0 +1,15 @@
+# Everything is bundled into dist/ by scripts/build.mjs, so the sources, tests and
+# dependencies do not belong in the package. media/ keeps only the icon: the
+# screenshots are served from GitHub so the README renders on the Marketplace.
+.vscode/**
+node_modules/**
+src/**
+test/**
+scripts/**
+tsconfig.json
+package-lock.json
+media/preview.css
+media/demo.md
+media/screenshot-*.png
+**/*.map
+**/.eslintrc*
