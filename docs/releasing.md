@@ -35,11 +35,12 @@ rejection therefore needs a new version, not a re-upload of the old one.
 ## First submission: by hand
 
 The API can only update a product that already exists, because every call is
-addressed to a product id. Version 1.0.0 goes up manually:
+addressed to a product id. The first version therefore goes up manually, which is
+how 1.0.0 was published:
 
 1. Create a Partner Center account (free) and register as an Edge extension
    developer.
-2. **Submit new extension**, upload `artifacts/usher-1.0.0.zip`.
+2. **Submit new extension**, upload `artifacts/usher-<version>.zip`.
 3. Fill in the listing from [store-listing.md](store-listing.md): description,
    screenshots from `build/store/`, privacy policy URL, and the per-permission
    justifications. The justifications matter — `<all_urls>` gets a human reviewer.

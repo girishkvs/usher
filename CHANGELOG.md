@@ -4,6 +4,26 @@ All notable changes to Usher are recorded here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [semantic versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] — 2026-08-16
+
+### Fixed
+
+- The table of contents could disappear for the rest of a session. Rendering a
+  document with fewer than two headings switched the sidebar off permanently, so
+  it stayed hidden even after a document with plenty of headings was opened.
+  Too few headings is now treated as a presentation decision and no longer
+  overwrites what the reader asked for.
+
+### Changed
+
+- The `:::` container scanner moved to `src/core/container-scan.ts` so the
+  browser extension and the VS Code extension resolve block boundaries with one
+  implementation instead of two.
+- The renderer accepts a callback for storing the chosen theme, so hosts without
+  `chrome.storage` can persist it their own way. Browser behaviour is unchanged.
+- The version is no longer duplicated in `public/manifest.json`; the build
+  injects it from `package.json` and fails if the field reappears.
+
 ## [1.0.0] — 2026-08-13
 
 First public release.

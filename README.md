@@ -2,9 +2,18 @@
 
 [![Microsoft Edge Add-ons](https://img.shields.io/badge/Edge%20Add--ons-install-0078D7?logo=microsoftedge&logoColor=white)](https://microsoftedge.microsoft.com/addons/detail/aeepoobopfolppmebnhihgogcplnfjhe)
 
-> Renders **Markdown** — from local files, from web pages, or from anything you paste — with **Mermaid** diagrams, syntax highlighting, and a live table of contents. Chrome and Edge, Manifest V3.
+> Renders **Markdown** — from local files, from web pages, or from anything you paste — with **Mermaid** diagrams, syntax highlighting, and a live table of contents.
 
-Open a `.md` file and Usher takes over the tab. No server, no upload, no round trip: everything renders locally inside the browser.
+Two extensions share one renderer:
+
+| | Where | Status |
+|---|---|---|
+| **Browser extension** | Chrome and Edge, Manifest V3 | [published to Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/aeepoobopfolppmebnhihgogcplnfjhe) |
+| **[VS Code extension](vscode/)** | A Markdown preview panel inside the editor | packaged, not yet published |
+
+The rendering pipeline, themes, and diagram handling live in
+[`src/core`](src/core) and are compiled into both, so the two cannot drift apart.
+Everything renders locally: no server, no upload, no round trip.
 
 ## Documentation
 
@@ -13,13 +22,13 @@ Open a `.md` file and Usher takes over the tab. No server, no upload, no round t
 | [docs/usage.md](docs/usage.md) | Install, enable local files, every setting, keyboard shortcuts, troubleshooting |
 | [docs/design.md](docs/design.md) | Architecture, the detection pipeline, why the network rules exist, security model, code map |
 | [docs/store-listing.md](docs/store-listing.md) | Listing copy, permission justifications, and the asset checklist for submission |
-| [vscode/README.md](vscode/README.md) | The companion VS Code extension: readable wide diagrams and `:::` admonitions |
+| [vscode/README.md](vscode/README.md) | The VS Code extension: a preview panel with a table of contents, reading themes and readable diagrams |
 | [docs/releasing.md](docs/releasing.md) | How a change gets from a git tag into the Edge Add-ons store |
 | [CHANGELOG.md](CHANGELOG.md) | What changed in each release |
 | [PRIVACY.md](PRIVACY.md) | What Usher reads, stores, and sends. The short version: nothing leaves your machine |
 | [THIRD-PARTY-NOTICES.txt](THIRD-PARTY-NOTICES.txt) | Licences for the 70 bundled open source packages |
 
-## What it does
+## What the browser extension does
 
 - **Local files** — `file:///C:/repo/README.md` renders in place, and re-renders automatically when you save the file.
 - **Web pages** — anything served as `text/markdown`, `text/plain`, or as a `.md` download. The download is intercepted and shown as a page instead.
@@ -30,7 +39,7 @@ Open a `.md` file and Usher takes over the tab. No server, no upload, no round t
 - **Reading tools** — sticky table of contents with scroll spy, reading progress bar, word count, heading anchors, per-block copy buttons, raw-source toggle, and a print stylesheet that drops the chrome.
 - **Six themes** — auto, light, dark, GitHub, sepia, high contrast — plus content width, font size, and custom CSS.
 
-## Install
+## Install the browser extension
 
 From the store, on Edge:
 
@@ -43,7 +52,7 @@ After installing, open the extension's details page and turn on **Allow access
 to file URLs**. Without it, `file://` documents are invisible to every
 extension, so local `.md` files will not render.
 
-## Install (unpacked)
+### Unpacked, for development
 
 ```powershell
 npm install
@@ -60,7 +69,32 @@ Then in **Edge** (`edge://extensions`) or **Chrome** (`chrome://extensions`):
 Web Store submission is deferred because it charges a registration fee; the same
 package works there unchanged if that ever changes.
 
+## The VS Code extension
+
+A Markdown preview panel that runs the same renderer inside the editor:
+`Ctrl+Shift+U`, or **Usher: Open Preview to the Side**. It brings the table of
+contents, the reading themes, word count, source toggle, copy as rich HTML and
+print with it, and keeps wide Mermaid diagrams readable.
+
+It also fixes two things in VS Code's own preview without replacing it: wide
+diagrams stop shrinking past legibility, and `:::note` style callouts render
+instead of appearing as literal marker lines. It never adds a second Mermaid
+renderer there, because two renderers in one preview leave the diagrams blank.
+
+```powershell
+npm install            # the renderer is shared, so install the root first
+cd vscode
+npm install
+npm run verify         # typecheck, unit tests, build
+npm run package        # vscode/usher-<version>.vsix
+```
+
+Details in [vscode/README.md](vscode/README.md).
+
 ## Commands
+
+Run from the repository root; these build and test the browser extension. The VS
+Code extension has its own set, listed above.
 
 | Command | What it does |
 |---------|--------------|
@@ -68,7 +102,7 @@ package works there unchanged if that ever changes.
 | `npm run build:dev` | Unminified bundle with inline source maps |
 | `npm run watch` | Rebuild on change; reload the extension to pick up changes |
 | `npm test` | Unit tests for detection, slugs, front matter, and the markdown pipeline |
-| `npm run test:e2e` | Browser suite: loads `dist/` into Chrome or Edge and runs 47 checks |
+| `npm run test:e2e` | Browser suite: loads `dist/` into Chrome or Edge and runs 52 checks |
 | `npm run typecheck` | `tsc --noEmit` |
 | `npm run licenses` | Fail if any dependency falls outside the permissive allowlist |
 | `npm run verify` | Typecheck, test, licence gate, build, and bundle checks |
@@ -77,6 +111,8 @@ package works there unchanged if that ever changes.
 | `npm run pack` | Zip `dist/` into `artifacts/` |
 
 ## Keyboard
+
+In the browser extension. The VS Code panel opens with `Ctrl+Shift+U`.
 
 | Key | Action |
 |-----|--------|

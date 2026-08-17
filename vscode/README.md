@@ -24,7 +24,7 @@ Everything renders locally. Nothing is uploaded, and the extension makes no netw
 ### Markdown support
 
 GitHub alerts, `:::` containers, tables, footnotes, definition lists, task lists,
-emoji, KaTeX maths, syntax highlighting for over 190 languages, YAML front
+emoji, KaTeX maths, syntax highlighting for 36 languages, YAML front
 matter, and Mermaid diagrams.
 
 ### Azure DevOps wiki and Docusaurus callouts
