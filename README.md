@@ -1,6 +1,7 @@
 # Usher
 
 [![Microsoft Edge Add-ons](https://img.shields.io/badge/Edge%20Add--ons-install-0078D7?logo=microsoftedge&logoColor=white)](https://microsoftedge.microsoft.com/addons/detail/aeepoobopfolppmebnhihgogcplnfjhe)
+[![VS Code Marketplace](https://img.shields.io/badge/VS%20Code-install-007ACC?logo=visualstudiocode&logoColor=white)](https://marketplace.visualstudio.com/items?itemName=girishkvs.usher)
 
 > Renders **Markdown** — from local files, from web pages, or from anything you paste — with **Mermaid** diagrams, syntax highlighting, and a live table of contents.
 
@@ -9,7 +10,7 @@ Two extensions share one renderer:
 | | Where | Status |
 |---|---|---|
 | **Browser extension** | Chrome and Edge, Manifest V3 | [published to Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/aeepoobopfolppmebnhihgogcplnfjhe) |
-| **[VS Code extension](vscode/)** | A Markdown preview panel inside the editor | packaged, not yet published |
+| **[VS Code extension](vscode/)** | A Markdown preview panel inside the editor | [published to the Marketplace](https://marketplace.visualstudio.com/items?itemName=girishkvs.usher) |
 
 The rendering pipeline, themes, and diagram handling live in
 [`src/core`](src/core) and are compiled into both, so the two cannot drift apart.
@@ -70,6 +71,8 @@ Web Store submission is deferred because it charges a registration fee; the same
 package works there unchanged if that ever changes.
 
 ## The VS Code extension
+
+**[Get Usher from the VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=girishkvs.usher)**
 
 A Markdown preview panel that runs the same renderer inside the editor:
 `Ctrl+Shift+U`, or **Usher: Open Preview to the Side**. It brings the table of
