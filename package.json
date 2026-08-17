@@ -1,6 +1,6 @@
 {
   "name": "@girishkvs/usher",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "private": true,
   "description": "Chrome and Edge extension that renders Markdown from local files and web pages, with Mermaid diagrams.",
   "keywords": [
@@ -33,6 +33,8 @@
     "typecheck": "tsc -p tsconfig.json",
     "test": "node --import tsx --test test/markdown.test.ts test/md-detect.test.ts test/shared.test.ts",
     "test:e2e": "node test/e2e/run.mjs",
+    "bench": "node --import tsx scripts/bench-render.mts",
+    "bench:browser": "node scripts/bench-browser.mjs",
     "pack": "node scripts/pack.mjs",
     "publish:edge": "node scripts/publish-edge.mjs",
     "check": "node scripts/check-bundles.mjs",

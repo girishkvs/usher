@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.1.0
+
+- **Jump to bottom.** Reaching the end of a long document no longer means
+  dragging the scrollbar.
+- The scroll controls moved out of the header and now float against the right
+  edge, next to the scrollbar. They hide when the document is too short to
+  scroll, and whichever arrow would do nothing fades back.
+
 ## 1.0.0
 
 First release.

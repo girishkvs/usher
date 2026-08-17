@@ -67,6 +67,7 @@ const ICONS = {
   copy: 'M8 3h9a2 2 0 0 1 2 2v11h-2V5H8V3Zm-3 4h9a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2Zm0 2v10h9V9H5Z',
   theme: 'M12 3a9 9 0 1 0 9 9c0-.5-.04-1-.11-1.48A5 5 0 0 1 12 3Z',
   top: 'M12 5 5 12l1.4 1.4L11 8.8V20h2V8.8l4.6 4.6L19 12l-7-7Z',
+  bottom: 'M12 19 5 12l1.4-1.4L11 15.2V4h2v11.2l4.6-4.6L19 12l-7 7Z',
   settings:
     'M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm9.4 4a7.4 7.4 0 0 0-.14-1.4l2.02-1.56-2-3.46-2.4.96a7.6 7.6 0 0 0-2.42-1.4L16.1 2h-4l-.36 2.54a7.6 7.6 0 0 0-2.42 1.4l-2.4-.96-2 3.46L2.94 10a7.5 7.5 0 0 0 0 2.8L.92 14.36l2 3.46 2.4-.96a7.6 7.6 0 0 0 2.42 1.4L8.1 22h4l.36-2.54a7.6 7.6 0 0 0 2.42-1.4l2.4.96 2-3.46-2.02-1.56c.09-.46.14-.93.14-1.4Z',
 };
@@ -113,6 +114,7 @@ export class UsherView {
     meta: HTMLElement;
     progress: HTMLElement;
     heading: HTMLElement;
+    scrollNav: HTMLElement;
   } | null = null;
 
   private readonly onScroll = (): void => this.updateProgress();
@@ -317,7 +319,6 @@ export class UsherView {
       this.headerButton('Copy as rich HTML', ICONS.copy, () => void this.copyHtml()),
       this.headerButton('Print / save as PDF', ICONS.print, () => this.print()),
       this.headerButton('Cycle theme', ICONS.theme, () => this.cycleTheme()),
-      this.headerButton('Back to top', ICONS.top, () => window.scrollTo({ top: 0, behavior: 'smooth' })),
     );
     header.append(titles, actions);
 
@@ -329,11 +330,36 @@ export class UsherView {
     raw.hidden = true;
 
     main.append(header, article, raw);
-    app.append(progress, sidebar, main);
+    const scrollNav = this.buildScrollNav();
+    app.append(progress, sidebar, main, scrollNav);
     this.context.host.appendChild(app);
 
-    this.elements = { app, sidebar, toc, article, raw, header, meta, progress, heading };
+    this.elements = { app, sidebar, toc, article, raw, header, meta, progress, heading, scrollNav };
     return this.elements;
+  }
+
+  /**
+   * The scroll controls float against the right edge, beside the scrollbar, rather than
+   * living in the header: they belong with the act of scrolling, not with the buttons
+   * that act on the document.
+   */
+  private buildScrollNav(): HTMLElement {
+    const nav = document.createElement('div');
+    nav.className = 'usher-scroll-nav';
+    nav.append(
+      this.headerButton('Back to top', ICONS.top, () => this.scrollToEnd('top')),
+      this.headerButton('Jump to bottom', ICONS.bottom, () => this.scrollToEnd('bottom')),
+    );
+    return nav;
+  }
+
+  /**
+   * Scrolls the document, not the article: the host page owns the scrollbar in the
+   * browser extension and in the VS Code panel alike.
+   */
+  private scrollToEnd(where: 'top' | 'bottom'): void {
+    const target = where === 'top' ? 0 : document.documentElement.scrollHeight;
+    window.scrollTo({ top: target, behavior: 'smooth' });
   }
 
   private headerButton(label: string, path: string, onClick: () => void): HTMLButtonElement {
@@ -576,5 +602,9 @@ export class UsherView {
     if (bar) {
       bar.style.width = `${(ratio * 100).toFixed(2)}%`;
     }
+
+    // Nothing to scroll means nothing to scroll to, so the control stays out of the way.
+    this.elements.scrollNav.hidden = scrollable <= 8;
+    this.elements.scrollNav.dataset.usherAt = ratio <= 0.01 ? 'top' : ratio >= 0.99 ? 'bottom' : 'middle';
   }
 }

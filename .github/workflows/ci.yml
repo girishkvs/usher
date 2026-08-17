@@ -54,6 +54,47 @@ jobs:
         run: npm run verify
         working-directory: vscode
 
+  e2e:
+    name: browser suite
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    env:
+      # Chrome's newer headless mode still loads extensions, so the runners need no
+      # virtual display. Both images ship Chrome, which the suite finds on its own.
+      USHER_HEADLESS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install
+        run: npm install --no-audit --no-fund
+      - name: Build
+        run: npm run build
+      - name: Report the browser the suite will drive
+        shell: bash
+        run: |
+          for candidate in \
+            "/usr/bin/google-chrome" \
+            "/c/Program Files/Google/Chrome/Application/chrome.exe"; do
+            if [ -x "$candidate" ]; then
+              echo "found: $candidate"
+              "$candidate" --version || true
+            fi
+          done
+      - name: Browser suite
+        run: npm run test:e2e
+      - name: Keep the screenshots when it fails
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-screenshots-${{ matrix.os }}
+          path: build/e2e-shots
+          if-no-files-found: ignore
+
   package:
     runs-on: ubuntu-latest
     steps:

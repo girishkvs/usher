@@ -106,6 +106,8 @@ Code extension has its own set, listed above.
 | `npm run watch` | Rebuild on change; reload the extension to pick up changes |
 | `npm test` | Unit tests for detection, slugs, front matter, and the markdown pipeline |
 | `npm run test:e2e` | Browser suite: loads `dist/` into Chrome or Edge and runs 52 checks |
+| `npm run bench` | Time the markdown pipeline across document sizes |
+| `npm run bench:browser` | Time the whole render, including sanitising, highlighting and Mermaid |
 | `npm run typecheck` | `tsc --noEmit` |
 | `npm run licenses` | Fail if any dependency falls outside the permissive allowlist |
 | `npm run verify` | Typecheck, test, licence gate, build, and bundle checks |
@@ -129,4 +131,16 @@ In the browser extension. The VS Code panel opens with `Ctrl+Shift+U`.
 
 - **Everything is local.** No network calls, no analytics, no remote code. Mermaid and KaTeX are bundled and loaded from disk, only when a document actually needs them.
 - **Pages stay cheap.** The script that runs on every page is 5 KB and exits in about a millisecond on anything that is not markdown. The 400 KB renderer and the 3.3 MB Mermaid bundle are injected on demand.
+- **Long documents scale linearly**, so there is no chunked rendering to go wrong. Measured with `npm run bench` and `npm run bench:browser` on a mid-range laptop:
+
+  | Words | Markdown pipeline | Whole render, with diagrams |
+  |---|---|---|
+  | 2,000 | 2 ms | 0.55 s |
+  | 8,000 | 8 ms | 1.1 s |
+  | 16,000 | 26 ms | 1.5 s |
+  | 32,000 | 57 ms | 2.6 s |
+  | 62,000 | 122 ms | — |
+
+  Cost per word is flat across that range. Parsing is a small fraction of the total;
+  the rest is sanitising, highlighting, building the DOM, and Mermaid.
 - **Output is sanitised.** Markdown may contain raw HTML, so everything is run through DOMPurify before it reaches the DOM. Scripts, event handlers, and `foreignObject` do not survive.

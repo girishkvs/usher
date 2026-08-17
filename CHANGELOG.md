@@ -4,6 +4,21 @@ All notable changes to Usher are recorded here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [semantic versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] — 2026-08-19
+
+### Added
+
+- **Jump to bottom.** There was no way to reach the end of a long document
+  without dragging the scrollbar.
+
+### Changed
+
+- The scroll controls moved out of the header and now float against the right
+  edge, next to the scrollbar. Back to top used to sit at the end of the header
+  among the buttons that act on the document rather than move through it. The
+  pair hides itself when the document is too short to scroll, and whichever arrow
+  would do nothing at the current position fades back.
+
 ## [1.1.0] — 2026-08-16
 
 ### Fixed
