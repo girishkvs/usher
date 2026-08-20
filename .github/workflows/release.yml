@@ -16,6 +16,9 @@ permissions:
 jobs:
   release:
     runs-on: ubuntu-latest
+    # The Edge submission polls two asynchronous operations, each for up to fifteen
+    # minutes, so this needs far more room than the CI jobs. It is still a cap.
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
